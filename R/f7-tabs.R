@@ -595,7 +595,7 @@ updateF7Tabs <- function(id, selected = NULL, session = shiny::getDefaultReactiv
 #'  )
 #' }
 #'
-insertF7Tab <- function(id, tab, target = NULL, position = c("new","before", "after"),
+insertF7Tab <- function(id, tab, target, position = c("before", "after"),
                         select = FALSE, session = shiny::getDefaultReactiveDomain()) {
 
   # in shinyMobile, f7Tab returns a list of 3 elements:
