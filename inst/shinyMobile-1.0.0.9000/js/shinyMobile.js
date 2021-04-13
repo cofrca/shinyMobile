@@ -269,10 +269,12 @@ $((function() {
         }));
     };
     getAllTabSetIds();
-    tabIds.forEach((function(index) {
+     tabIds.forEach((function(index) {
         var id = "insert_" + index;
         Shiny.addCustomMessageHandler(id, (function(message) {
             var tabId = $("#" + message.ns + "-" + message.target);
+            var idMe = $("#" + message.ns);
+            var msgLink =$('div[class="toolbar tabbar tabbar-labels toolbar-bottom tabLinks"] > div[class="toolbar-inner"]')
             var tab = $(message.value.html);
             var newTab;
             if ($(tabId).hasClass("swiper-slide")) {
@@ -281,8 +283,8 @@ $((function() {
                     $(newTab).removeClass("page-content");
                 }
                 if (message.select === "true") {
-                    $(newTab).addClass("swiper-slide-active");
-                }
+                    $(newTab).addClass("swiper-slide-active"); 
+                }    // if false, then see what tab is active, remove class then re-add class ... would this work to fix #180?
                 if (app.params.dark) $(newTab).css("background-color", "");
             } else {
                 newTab = $(tab);
@@ -294,6 +296,11 @@ $((function() {
             } else if (message.position === "before") {
                 $(newTab).insertBefore($(tabId));
                 $(message.link).insertBefore($('.tabLinks [data-tab ="#' + message.ns + "-" + message.target + '"]'));
+            } else if (message.position === "new") {
+                $(newTab).appendTo($(idMe));
+                $(message.link).appendTo($('div[class="toolbar tabbar tabbar-labels toolbar-bottom tabLinks"] > div[class="toolbar-inner"]'));
+                var swiper = document.querySelector(".swiper-container").swiper;
+                swiper.update();
             }
             Shiny.renderContent(tab[0], {
                 html: tab.html(),
